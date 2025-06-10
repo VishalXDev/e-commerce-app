@@ -43,6 +43,12 @@
         "projectId": "126eecd7-c01a-49d1-95d8-13d223c3c214"
       }
     },
-    "owner": "vishalxdev"
+    "owner": "vishalxdev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/126eecd7-c01a-49d1-95d8-13d223c3c214"
+    }
   }
 }
