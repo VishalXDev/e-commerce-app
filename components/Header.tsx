@@ -12,7 +12,7 @@ export default function Header() {
     <View style={styles.container}>
       {/* App name with gradient-like effect */}
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>ShopHub</Text>
+        <Text style={styles.title}>QuickBasket</Text>
         <Text style={styles.subtitle}>Premium Store</Text>
       </View>
 
