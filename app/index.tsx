@@ -1,4 +1,3 @@
-// app/index.tsx
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -11,7 +10,15 @@ import {
 import ProductCard from '../components/ProductCard';
 import { Product } from '../types';
 
-export default function ProductList() {
+interface ProductListProps {
+  searchQuery: string;
+  selectedCategory: string;
+}
+
+export default function ProductList({
+  searchQuery,
+  selectedCategory,
+}: ProductListProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -38,6 +45,18 @@ export default function ProductList() {
     fetchProducts();
   };
 
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      product.category.toLowerCase().includes(selectedCategory.toLowerCase());
+
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -49,18 +68,22 @@ export default function ProductList() {
 
   return (
     <View style={styles.wrapper}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Featured Products</Text>
-        <Text style={styles.headerSubtitle}>Discover our best deals</Text>
+        <Text style={styles.headerSubtitle}>
+          {filteredProducts.length} product(s) found
+        </Text>
       </View>
-      
+
+      {/* Product Grid */}
       <FlatList
-        data={products}
+        data={filteredProducts}
         renderItem={({ item }) => <ProductCard product={item} />}
         keyExtractor={(item) => item.id.toString()}
         numColumns={3}
         contentContainerStyle={styles.container}
-        showsVerticalScrollIndicator={false}
+        columnWrapperStyle={styles.columnWrapper}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -69,6 +92,7 @@ export default function ProductList() {
             tintColor="#6366f1"
           />
         }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -110,7 +134,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   container: {
-    padding: 12,
-    paddingBottom: 20,
+    padding: 8,
+    paddingBottom: 24,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
 });

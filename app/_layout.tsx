@@ -1,27 +1,33 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Slot, useSegments } from 'expo-router';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import Header from '../components/Header';
 import { CartProvider } from '../context/CartContext';
 
 function LayoutWrapper() {
   const segments = useSegments();
   const hideHeaderOn = ['product', '+not-found'];
-  const hideHeader = segments[0] && hideHeaderOn.includes(segments[0]);
+  const currentSegment = segments[segments.length - 1] || '';
+  const hideHeader = hideHeaderOn.includes(currentSegment);
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor="#667eea" translucent />
-      
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="#667eea"
+        translucent={Platform.OS === 'android'}
+      />
+
       {/* Background Gradient */}
       <LinearGradient
         colors={['#f8fafc', '#e2e8f0']}
-        style={styles.backgroundGradient}
+        style={StyleSheet.absoluteFill}
       />
 
-      {/* Show Header unless route is in hideHeaderOn */}
+      {/* Header (conditionally shown) */}
       {!hideHeader && <Header />}
 
+      {/* Slot content */}
       <View style={styles.container}>
         <Slot />
       </View>
@@ -40,14 +46,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#667eea',
-  },
-  backgroundGradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
+    backgroundColor: '#667eea', // fallback color behind gradient
   },
   container: {
     flex: 1,

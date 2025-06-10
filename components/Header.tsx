@@ -1,4 +1,3 @@
-// components/Header.tsx
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -10,19 +9,21 @@ export default function Header() {
 
   return (
     <View style={styles.container}>
-      {/* App name with gradient-like effect */}
+      {/* App Branding */}
       <View style={styles.titleContainer}>
         <Text style={styles.title}>QuickBasket</Text>
         <Text style={styles.subtitle}>Premium Store</Text>
       </View>
 
-      {/* Modern cart icon */}
+      {/* Cart Button */}
       <TouchableOpacity
-        style={styles.cartContainer}
+        activeOpacity={0.8}
         onPress={() => router.push('/tabs/cart')}
+        style={styles.cartButton}
       >
         <View style={styles.cartIconWrapper}>
           <Text style={styles.cartIcon}>🛒</Text>
+
           {cartItems.length > 0 && (
             <View style={styles.cartBadge}>
               <Text style={styles.cartCount}>{cartItems.length}</Text>
@@ -38,49 +39,52 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#6366f1', // Modern indigo color
+    backgroundColor: '#6366f1', // Indigo-500
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
   },
   titleContainer: {
     alignItems: 'flex-start',
   },
   title: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
     letterSpacing: 0.5,
   },
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255,255,255,0.75)',
     fontSize: 12,
     fontWeight: '500',
     marginTop: -2,
   },
-  cartContainer: {
-    position: 'relative',
+  cartButton: {
+    borderRadius: 50,
+    overflow: 'hidden',
   },
   cartIconWrapper: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     padding: 8,
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    position: 'relative',
   },
   cartIcon: {
     fontSize: 24,
+    color: '#fff',
   },
   cartBadge: {
     position: 'absolute',
     top: -6,
     right: -6,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#ef4444', // Red-500
     borderRadius: 12,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cartCount: {
-    color: 'white',
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 11,
   },

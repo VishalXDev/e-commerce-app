@@ -4,6 +4,7 @@ export interface Product {
   price: number;
   image: string;
   description: string;
+  category: string; // ✅ Add this line
   rating: {
     rate: number;
     count: number;
@@ -12,5 +13,4 @@ export interface Product {
 
 export interface CartItem extends Product {
   quantity: number;
-   category?: string;
 }

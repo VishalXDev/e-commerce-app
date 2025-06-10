@@ -23,7 +23,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   useEffect(() => {
-    saveCartToStorage();
+    saveCartToStorage(cartItems);
   }, [cartItems]);
 
   const loadCartFromStorage = async () => {
@@ -32,28 +32,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data) {
         setCartItems(JSON.parse(data));
       }
-    } catch (e) {
-      console.error('Failed to load cart from storage', e);
+    } catch (error) {
+      console.error('❌ Error loading cart from storage:', error);
     }
   };
 
-  const saveCartToStorage = async () => {
+  const saveCartToStorage = async (items: CartItem[]) => {
     try {
-      await AsyncStorage.setItem('cart', JSON.stringify(cartItems));
-    } catch (e) {
-      console.error('Failed to save cart to storage', e);
+      await AsyncStorage.setItem('cart', JSON.stringify(items));
+    } catch (error) {
+      console.error('❌ Error saving cart to storage:', error);
     }
   };
 
   const addToCart = (product: Product) => {
-    setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
+    setCartItems(prevItems => {
+      const existing = prevItems.find(item => item.id === product.id);
       if (existing) {
-        return prev.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        return prevItems.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
-        return [...prev, { ...product, quantity: 1 }];
+        return [...prevItems, { ...product, quantity: 1 }];
       }
     });
   };
@@ -63,8 +65,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeFromCart(productId);
       return;
     }
-
-    setCartItems(prev => 
+    setCartItems(prev =>
       prev.map(item =>
         item.id === productId ? { ...item, quantity } : item
       )
@@ -77,13 +78,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       'Are you sure you want to remove this item from your cart?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Remove', 
+        {
+          text: 'Remove',
           style: 'destructive',
           onPress: () => {
             setCartItems(prev => prev.filter(item => item.id !== productId));
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -94,33 +95,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       'Are you sure you want to clear your cart?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Clear', 
+        {
+          text: 'Clear',
           style: 'destructive',
-          onPress: () => setCartItems([])
-        }
+          onPress: () => setCartItems([]),
+        },
       ]
     );
   };
 
-  const getCartItemCount = () => {
-    return cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  };
+  const getCartItemCount = () =>
+    cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  const getCartTotal = () => {
-    return cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  };
+  const getCartTotal = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      updateQuantity, 
-      removeFromCart, 
-      clearCart,
-      getCartItemCount,
-      getCartTotal
-    }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        getCartItemCount,
+        getCartTotal,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

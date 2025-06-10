@@ -4,21 +4,25 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"]         // ✅ For absolute imports like @/components/Button
     },
-    "moduleResolution": "bundler",
-    "jsx": "react-native",
-    "allowJs": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    "moduleResolution": "bundler", // ✅ Required for Expo Router + Metro bundler
+    "jsx": "react-native",         // ✅ For React Native JSX transform
+    "allowJs": true,               // ✅ Allow importing .js files
+    "noEmit": true,                // ✅ Prevents JS output
+    "esModuleInterop": true,       // ✅ Better compatibility with commonjs modules
+    "skipLibCheck": true,          // ✅ Speeds up build by skipping .d.ts checks
+    "resolveJsonModule": true      // ✅ Allow importing JSON files
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    ".expo/types/**/*.ts",   // ✅ Includes expo-router types (good)
+    "expo-env.d.ts"          // ✅ Your custom global types
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
 }
