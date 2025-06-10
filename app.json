@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ecommerce-app",
-    "slug": "ecommerce-app",
+    "slug": "e-commerce-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -36,6 +36,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "126eecd7-c01a-49d1-95d8-13d223c3c214"
+      }
+    },
+    "owner": "vishalxdev"
   }
 }

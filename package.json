@@ -47,5 +47,9 @@
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "description": "🛍️ React Native E-Commerce App\r Mini e-commerce app built with React Native & Expo. Features product browsing, cart management, and checkout.",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
